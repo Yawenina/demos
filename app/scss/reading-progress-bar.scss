@@ -85,101 +85,94 @@ a{
 		display:none;
 		width:100%;
 	}
+
 	.holder{
 		position:relative;
 		font-size:85%;
 		@media only screen and (min-width:750px) {font-size:90%;}
-		@media only screen and (min-width:900px) {font-szie:95%;}
+		@media only screen and (min-width:900px) {font-size:95%;}
 		padding:1.8em 0 0 0;
-		background-color:$background;
+		background:$background;
 		box-shadow:0 .5em 1.5em $background;
 
 		.bar{
 			position: absolute;
-			bottom:0;
 			left:0;
+			bottom:0;
 			width:100%;
 			height:2px;
-			background-color:$subtle;
-
-			.indicator{
-				position:absolute;
-				top:0;
-				left:0;
-				height:100%;
-				background-color:$h2;
-			}
+			background:$subtle;
 		}
-
+		.indicator{
+			position:absolute;
+			top:0;
+			left:0;
+			height:100%;
+			background:$h2;
+		}
+		
 		.labels{
 			max-width:1280px;
-			margin:0 auto;
 			padding:0 2em;
+			margin:0 auto;
 			text-align:center;
 
 			i{
 				display:block;
-				position:relative;
 				float:left;
+				position:relative;
 				cursor:pointer;
-
 				&::before{
 					position:absolute;
-					bottom:0;
 					left:50%;
+					bottom:0;
 					display:block;
 					content:'';
 					width:.9em;
 					height:.9em;
 					border-radius:50%;
+					background:$background;
 					border:solid 3px $subtle;
-					background-color:$background;
 					transform:translateX(-50%) translateY(50%);
-					transition:border-color 100ms ease-in,
-								background-color 150ms ease-in;
+					transition:border-color 100ms ease-in,background-color 150ms ease-out;
 				}
 				&::after{
-					display:block;
 					content:attr(data-label);
 					position:relative;
 					top:0;
+					display:block;
 					padding-bottom:1.8em;
 					font-family:'Open Sans';
-					font-weight:400;
 					color:$h2;
-					transition:color 150ms ease-in,
-								top 100ms ease-out;
+					transition:color 150ms ease-in,top 100ms ease-out;
 				}
 				&:hover,&:focus{
 					&::before{background-color:$subtle;}
-					&::after{top:-.2em}				
+					&::after{top:-.2em;}
 				}
 				&.read{
 					&::before{border-color:$h2;}
-					&:hover,&:focus{
-						&::before{background-color:$h2;}
-					}
+					&:hover,&:focus{&::before{background-color:$h2;}}
 				}
 				&.reading{
 					&::after{color:$dark;}
-					&:hover,&:focus{
-						&::after{top:0;}
-					}
+					&:hover,&:focus{top:0;}
 				}
 			}
+
 		}
 
 	}
 	&.fixed{
-		.holder{
-			position:fixed;
-			top:0;
-			left:0;
-			width:100%;
-			z-index:1;
+			.holder{
+				position:fixed;
+				top:0;
+				left:0;
+				width:100%;
+				z-index:1;
+			}
+			.shim{
+				display:block;
+			}
 		}
-		.shim{
-			display:block;
-		}
-	}
 }
