@@ -4,18 +4,50 @@
 	<title></title>
 	<link rel="stylesheet" href="semantic/dist/semantic.min.css">
 	<style>
-		body{padding:50px 20px;}
-		h1.teal.header{width:200px;margin:0 auto;}
+		body{padding:50px;}
+		h1.teal.header{width:20%;margin:0 auto;}
+		a.tag.label{margin-right:15px;}
 	</style>
 </head>
 <body>
 	
 	<div class="container">
-		<h1 class="ui center aligned teal header">
+		<h1 class="ui teal header">
 			<i class="lab icon"></i>
-			<div class="content">Demos</div>
+			<div class="content">My Demos</div>
 		</h1>
+		<p>
+			<i class="large tags icon"></i>
+			<a class="ui {{tag.color}} tag label" v-for='tag in tags'>{{tag.name}}</a>
+		</p>
+		<div class="ui stackable four column grid">
+			<!-- <demo v-for="demo in demos" :demos="demos"></demo> -->
+		</div>
+
+		<a href="" v-for="demo in demos">{{demo.name}}123</a>
 	</div>
 
+	<template id="demo">
+		<div class="column">
+			
+		</div>
+	</template>
+
+	
+	<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "AIzaSyCfmoSRCCWhpylQflAI-ZJCNHc5vqcx5yQ",
+	    authDomain: "demos-68bf2.firebaseapp.com",
+	    databaseURL: "https://demos-68bf2.firebaseio.com",
+	    storageBucket: "",
+	  };
+	  firebase.initializeApp(config);
+	</script>
+	    
+
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script src='app/js/index.js'></script>
 </body>
 </html>

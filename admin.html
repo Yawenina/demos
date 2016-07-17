@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="semantic/dist/semantic.min.css">
+	<style>
+		body{padding:50px;}
+		h2.ui.header a{
+			margin-right:20px;
+			color: inherit;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="ui three column grid">
+			<div class="row">
+				<div class="three wide column">
+					<user></user>
+				</div>
+				<div class="ten wide column">
+					<h2 class="ui teal header">
+						<a @click="currentView = 'add'">Add demos</a> 
+						<a @click="currentView = 'manage'">Manage demos</a>
+					</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="three wide column"></div>
+				<div class="ten wide column">
+					<component :is='currentView' transition='fade' transition-mode ='out-in' keep-alive></component>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<template id="add">
+		<form class="ui form">
+			<div class="field">
+				<label for="name">Name</label>
+				<input type="text" placeholder="Name" v-model="demo.name">
+			</div>
+			<div class="field">
+				<label for="date">Date</label>
+				<input type="date" placeholder="Date" v-model="demo.date">
+			</div>
+			<div class="field">
+				<label for="description">Description</label>
+				<input type="text" placeholder="Description" v-model="demo.description">
+			</div>
+			<div class="field">
+				<label for="github">Github</label>
+				<input type="text" placeholder="Github" v-model="demo.github">
+			</div>
+			<div class="two fields">
+				<div class="field">
+					<label for="img">Image</label>
+					<input type="file">
+				</div>
+				<div class="field">
+					<label for="">Uplodaing</label>
+					<progress></progress>
+
+				</div>
+			</div>
+			<div class="field">
+				<label for="tags">Tag</label>
+					<select name="tags" id="tags" class="ui dropdown">
+						<option value="HTML">HTML</option>
+						<option value="CSS">CSS</option>
+						<option value="JavaScript">JavaScript</option>
+					</select>
+				
+			</div>
+
+			<button class="ui green basic button" @click.prevent='addDemo'>Add</button>
+		</form>
+	</template>
+	
+
+	<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "AIzaSyCfmoSRCCWhpylQflAI-ZJCNHc5vqcx5yQ",
+	    authDomain: "demos-68bf2.firebaseapp.com",
+	    databaseURL: "https://demos-68bf2.firebaseio.com",
+	    storageBucket: "demos-68bf2.appspot.com",
+	  };
+	  firebase.initializeApp(config);
+	</script>
+    
+	<script src="http://cdn.jsdelivr.net/vue/1.0.26/vue.js"></script>	
+	<script src='app/js/admin.js'></script>
+</body>
+</html>
