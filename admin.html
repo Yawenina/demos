@@ -17,65 +17,79 @@
 		<div class="ui three column grid">
 			<div class="row">
 				<div class="three wide column">
-					<user></user>
+					<admin></admin>
 				</div>
 				<div class="ten wide column">
-					<h2 class="ui teal header">
-						<a @click="currentView = 'add'">Add demos</a> 
-						<a @click="currentView = 'manage'">Manage demos</a>
-					</h2>
-				</div>
-			</div>
-			<div class="row">
-				<div class="three wide column"></div>
-				<div class="ten wide column">
+					<div class="ten wide column">
+						<h2 class="ui teal header">
+							<a @click="currentView = 'add'">Add demos</a> 
+							<a @click="currentView = 'manage'">Manage demos</a>
+						</h2>
+					</div>
 					<component :is='currentView' transition='fade' transition-mode ='out-in' keep-alive></component>
 				</div>
 			</div>
 		</div>
 	</div>
+<!-- user template -->
+	<template id="admin">
+		<div class="login" v-if='!status'>
+			<h1 class="ui red header">Log in</h1>
+			<button class="ui google plus button" @click='login'><i class="google plus icon"></i> Google Plus </button>
+		</div>
+		<div class='user' v-else>
+			<div class="ui mini steps">
+				<div class="completed step">
+					<i class="user icon"></i>{{username}}
+				</div>
+			</div>
+			<button class="ui small orange basic button" @click='logout'>Log Out</button></button>
+			
+		</div>
+	</template>
 
+<!-- add template -->
 	<template id="add">
-		<form class="ui form">
-			<div class="field">
-				<label for="name">Name</label>
-				<input type="text" placeholder="Name" v-model="demo.name">
-			</div>
-			<div class="field">
-				<label for="date">Date</label>
-				<input type="date" placeholder="Date" v-model="demo.date">
-			</div>
-			<div class="field">
-				<label for="description">Description</label>
-				<input type="text" placeholder="Description" v-model="demo.description">
-			</div>
-			<div class="field">
-				<label for="github">Github</label>
-				<input type="text" placeholder="Github" v-model="demo.github">
-			</div>
-			<div class="two fields">
-				<div class="field">
-					<label for="img">Image</label>
-					<input type="file">
+		<div>
+			<form class="ui form">
+				<div class="required field">
+					<label for="name">Name</label>
+					<input type="text" placeholder="Name" v-model="demo.name">
 				</div>
 				<div class="field">
-					<label for="">Uplodaing</label>
-					<progress></progress>
-
+					<label for="date">Date</label>
+					<input type="date" placeholder="Date" v-model="demo.date">
 				</div>
-			</div>
-			<div class="field">
-				<label for="tags">Tag</label>
-					<select name="tags" id="tags" class="ui dropdown">
-						<option value="HTML">HTML</option>
-						<option value="CSS">CSS</option>
-						<option value="JavaScript">JavaScript</option>
-					</select>
-				
-			</div>
-
-			<button class="ui green basic button" @click.prevent='addDemo'>Add</button>
-		</form>
+				<div class="field">
+					<label for="description">Description</label>
+					<input type="text" placeholder="Description" v-model="demo.description">
+				</div>
+				<div class="required field">
+					<label for="github">Github</label>
+					<input type="text" placeholder="Github" v-model="demo.github">
+				</div>
+				<div class="two fields">
+					<div class="field">
+						<label for="img">Image</label>
+						<input type="file" id='img' @change='sendImg'>
+					</div>
+					<div class="field">
+						<label for="">Uplodaing</label>
+						<progress value={{val}} max='100'></progress>
+						<span v-if='val == 100'>上传成功！</span>
+					</div>
+				</div>
+				<div class="required field">
+					<label for="tags">Tag</label>
+						<select name="tags" id="tags" class="ui dropdown">
+							<option value="HTML">HTML</option>
+							<option value="CSS">CSS</option>
+							<option value="JavaScript">JavaScript</option>
+						</select>
+				</div>
+				<button class="ui green basic button" @click.prevent='addDemo'>Add</button>
+			</form>
+		</div>
 	</template>
 	
 
