@@ -5,8 +5,11 @@
 	<link rel="stylesheet" href="semantic/dist/semantic.min.css">
 	<style>
 		body{padding:50px;}
-		h1.teal.header{width:20%;margin:0 auto;}
+		h1.teal.header{width:20%;margin:10px auto;}
 		a.tag.label{margin-right:15px;}
+		.tags{
+			margin-bottom:15px;
+		}
 	</style>
 </head>
 <body>
@@ -16,24 +19,44 @@
 			<i class="lab icon"></i>
 			<div class="content">My Demos</div>
 		</h1>
-		<p>
-			<i class="large tags icon"></i>
-			<a class="ui {{tag.color}} tag label" v-for='tag in tags'>{{tag.name}}</a>
-		</p>
-		<div class="ui stackable four column grid">
-			<!-- <demo v-for="demo in demos" :demos="demos"></demo> -->
+		<div class="ui grid">
+			<div class="one wide column"></div>
+			<div class="fourteen wide column">
+				<p class="tags">
+					<i class="large tags icon"></i>
+					<a class="ui {{tag.color}} tag label" @click="text = tag.name" v-for='tag in tags'>{{tag.name}}</a>
+				</p>
+				<!--图片展示-->
+				<div class="three column stackable ui grid">
+					<div class="ui active inverted dimmer" v-if="!demos">
+						<div class="ui text loader">Loading</div>
+					</div>
+					<div class="column" v-for="demo in demos | filterBy text in 'tag'">
+						<div class="ui card">
+							<div class="ui fluid image">
+								<div class="ui ribbon label"> {{demo.tag}} </div>
+								<img src="{{demo.imgUrl}}" alt="">
+							</div>
+							<div class="content">
+								<a href="{{demo.src}}" class="header">{{demo.name}}</a>
+								<div class="meta">
+									<span class="date">{{demo.date}}</span>
+								</div>
+								<div class="description">{{demo.description}}</div>
+							</div>
+							<div class="extra content">
+								<a href="{{demo.github}}"><i class="github icon"></i>Codes on Github</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<a href="" v-for="demo in demos">{{demo.name}}123</a>
 	</div>
 
-	<template id="demo">
-		<div class="column">
-			
-		</div>
-	</template>
 
-	
+	<!--引入firebase-->
 	<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
 	<script>
 	  // Initialize Firebase
