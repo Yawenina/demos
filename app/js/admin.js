@@ -1,7 +1,7 @@
-
 //add component
 Vue.component('add',{
 	template:'#add',
+	props:['email'],
 	data:function(){
 		return {
 			demo:{
@@ -9,8 +9,10 @@ Vue.component('add',{
 				date:'',
 				description:'',
 				github:'',
-				tag:'HTML',
-				imgUrl:''
+				tag:'',
+				imgUrl:'',
+				src:'',
+				edit:false
 			},
 			val:0
 		}
@@ -43,26 +45,68 @@ Vue.component('add',{
         //上传数据
         'addDemo':function(){
             let that = this
-            //检测是否填充必要数据
-            if(this.demo.name && this.demo.description && this.demo.tag && this.demo.github && this.demo.imgUrl){
-                //上传数据
-                firebase.database().ref().child('demos').push(this.demo).then(function(){
-                    alert('上传成功！')
-                    //清空已填内容
-                    for(let key in that.demo){
-                        that.demo[key] = ''
-                    }
-                    that.val = 0
-                }).catch(function(error){
-                    console.log(error)
-                })
-            }else{
-                alert('请完善必填项目')
-            }
+			//检查是否登录
+			if(this.email){
+				//检测是否填充必要数据
+				if(this.demo.name && this.demo.description && this.demo.tag && this.demo.github && this.demo.src){
+					//上传数据
+					firebase.database().ref().child('demos').push(this.demo).then(function(){
+						alert('上传成功！')
+						//清空已填内容
+						for(let key in that.demo){
+							that.demo[key] = ''
+						}
+						that.demo['tag'] = 'HTML'
+						that.val = 0
+					}).catch(function(error){
+						console.log(error)
+					})
+				}else{
+					alert('请完善必填项目')
+				}
+			}else{
+				alert('请先登录')
+			}
         }
 	}
 })
 
+//manage component
+Vue.component('manage',{
+	template:'#manage',
+	props:['email'],
+	data:function(){
+		return {
+			demos:null,
+			status:true,
+			details:false
+		}
+	},
+	methods:{
+		deleteDemo:function(key){
+			firebase.database().ref('demos/'+key).remove().then(function(){
+				alert('删除成功！')
+			})
+		},
+		updateDemo:function(key,demo){
+			demo.edit = false
+			let that  = this
+			firebase.database().ref('demos/'+key).update(demo).then(function(){
+				alert('更新成功！')
+			})
+		}
+
+	},
+	ready:function(){
+		if(this.email){
+			let that = this
+			firebase.database().ref().child('demos').on('value',function(snapshot){
+				that.demos = snapshot.val()
+				that.status = false
+			})
+		}
+	}
+})
 
 var vm = new Vue({
 	el:'body',
@@ -95,24 +139,20 @@ var vm = new Vue({
                 that.email = ''
 				alert('您已成功退出！')
 			})
-		},
-        currentUser:function(){
-            let user = firebase.auth().currentUser
-            console.log(user)
-            //检查用户是否已登录,已登录则给email赋值，否则登录
-            if(user != null && user.email == 'yawenina@google.com'){
-                this.email = user.email
-            }
-            console.log('hi')
-        }
+		}
 	},
     ready:function(){
-        //ready时检测是否用户已登录
+        //ready时检测是否已用管理员身份登录
         let that = this
         firebase.auth().onAuthStateChanged(function(user){
-            if(user){
-                that.email = user.email
-            }
+			if(user){
+				if(user.email == 'yawenina@gmail.com'){
+					that.email = user.email
+				}else{
+					alert('请使用管理员登录')
+					that.logout()
+				}
+			}
         })
     }
 })

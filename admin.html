@@ -6,10 +6,26 @@
 	<link rel="stylesheet" href="semantic/dist/semantic.min.css">
 	<style>
 		body{padding:50px;}
-		h2.ui.header a{
+		.ui.header:last-child{margin-bottom: 20px;}
+		h2.ui.teal.header a{
 			margin-right:20px;
 			color: inherit;
 			cursor: pointer;
+		}
+		.ui.dimmer{
+			top:30px !important;
+		}
+		.ui.list>.item{
+			padding-top:15px;
+		}
+		.ui.segment{
+			margin:2em 0;
+		}
+		.fade-transition {
+			transition: opacity 0.2s ease;
+		}
+		.fade-enter, .fade-leave {
+			opacity: 0;
 		}
 	</style>
 </head>
@@ -38,7 +54,7 @@
 							<a @click="currentView = 'manage'">Manage demos</a>
 						</h2>
 					</div>
-					<component :is='currentView' transition='fade' transition-mode ='out-in' keep-alive></component>
+					<component :is='currentView' :email ='email' transition='fade' transition-mode ='out-in' keep-alive></component>
 				</div>
 			</div>
 		</div>
@@ -53,19 +69,25 @@
 					<input type="text" placeholder="Name" v-model="demo.name">
 				</div>
 				<div class="field">
-					<label for="date">Date</label>
-					<input type="date" placeholder="Date" v-model="demo.date">
-				</div>
-				<div class="field">
 					<label for="description">Description</label>
 					<input type="text" placeholder="Description" v-model="demo.description">
+				</div>
+				<div class="two fields">
+					<div class="required field">
+						<label for="src">Src</label>
+						<input type="text" placeholder="Src" v-model="demo.src"/>
+					</div>
+					<div class="field">
+						<label for="date">Date</label>
+						<input type="date" placeholder="Date" v-model="demo.date">
+					</div>
 				</div>
 				<div class="required field">
 					<label for="github">Github</label>
 					<input type="text" placeholder="Github" v-model="demo.github">
 				</div>
 				<div class="two fields">
-					<div class=" required field">
+					<div class="field">
 						<label for="img">Image</label>
 						<input type="file" id='img' @change='sendImg'>
 					</div>
@@ -88,7 +110,66 @@
 			</form>
 		</div>
 	</template>
-	
+
+	<!--manage template-->
+	<template id="manage">
+		<div>
+			<div class="ui active inverted dimmer" v-if="status && !emails">
+				<div class="ui text loader">Loading</div>
+			</div>
+			<div class="ui orange message" v-if="!demos && !status">目前没有数据</div>
+			<div class="ui middle aligned divided list" v-if="email">
+				<div class="item" v-for="demo in demos">
+					<div class="right floated content">
+						<button class="ui olive small icon button" @click="demo.edit = !demo.edit"><i class="edit icon"></i></button>
+						<button class="ui yellow small icon button" @click="deleteDemo($key)"><i class="trash outline icon"></i></button>
+					</div>
+					<div class="content">
+						<a href="{{demo.src}}" class="header">{{demo.name}}</a>
+						<div class="description" v-show="!demo.edit">{{demo.description}}</div>
+					</div>
+					<div class="ui segment" v-show="demo.edit">
+						<div class="ui form">
+							<div class="inline fields">
+								<div class="eight wide field">
+									<label for="name">Name</label>
+									<input type="text" value="{{demo.name}}" v-model="demo.name"/>
+								</div>
+								<div class="eight wide field">
+									<label for="date">Date</label>
+									<input type="date" value="{{demo.date}}" v-model="demo.date"/>
+								</div>
+							</div>
+							<div class="inline fields">
+								<div class="eight wide field">
+									<label for="src">Src</label>
+									<input type="text" value="{{demo.src}}" v-model="demo.src"/>
+								</div>
+								<div class="eight wide field">
+									<label for="tag">Tag</label>
+									<select name="tag" id="tag" class="ui dropdown" v-model="demo.tag">
+										<option value="HTML" :selected="demo.tag == 'HTML'">HTML</option>
+										<option value="CSS" :selected="demo.tag == 'CSS'">CSS</option>
+										<option value="JavaScript" :selected="demo.tag == 'JavaScript'">JavaScript</option>
+									</select>
+								</div>
+							</div>
+							<div class="field">
+								<label for="github">Github</label>
+								<input type="text" value="{{demo.github}}" v-model="demo.github"/>
+							</div>
+							<div class="field">
+								<label for="description">Description</label>
+								<input type="text" value="{{demo.description}}" v-model="demo.description"/>
+							</div>
+							<button class="ui green button" @click="updateDemo($key,demo)">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ui red message" v-else>请先使用管理员登录！</div>
+		</div>
+	</template>
 
 	<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
 	<script>
