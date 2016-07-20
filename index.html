@@ -5,11 +5,24 @@
 	<link rel="stylesheet" href="semantic/dist/semantic.min.css">
 	<style>
 		body{padding:50px;}
-		h1.teal.header{width:20%;margin:10px auto;}
+		h1.teal.header{width:30%;margin:10px auto 20px;}
 		a.tag.label{margin-right:15px;}
 		.tags{
 			margin-bottom:15px;
 		}
+		.ui.cards{
+			display: flex;
+			flex-direction: row;
+			justify-content:flex-start;
+			margin-top:20px;
+		}
+		@media screen and (min-width:100px) {
+			.ui.cards > .card{
+				margin-right:45px;
+				margin-top:15px;
+			}
+		}
+
 	</style>
 </head>
 <body>
@@ -29,20 +42,19 @@
 						{{tag.name}}</a>
 				</p>
 				<!--图片展示-->
-					<div class="three column stackable ui grid">
 						<div class="ui active inverted dimmer" v-if="!demos">
 							<div class="ui text loader">Loading</div>
 						</div>
-						<div class="column" v-for="demo in demos | filterBy text in 'tag'">
-							<div class="ui card">
+						<div class="ui cards" >
+							<div class="card" v-for="demo in demos | filterBy text in 'tag'">
 								<div class="ui fluid image">
 									<div class="ui ribbon label"
 										 :class="{'olive':demo.tag=='HTML','green':demo.tag=='CSS','yellow':demo.tag=='JavaScript'}">
 										{{demo.tag}} </div>
-									<img src="{{demo.imgUrl}}" alt="">
+									<a href="{{demo.src}}" target="_blank"><img src="{{demo.imgUrl}}" alt=""></a>
 								</div>
 								<div class="content">
-									<a href="{{demo.src}}" class="header">{{demo.name}}</a>
+									<a href="{{demo.src}}" class="header" target="_blank">{{demo.name}}</a>
 									<div class="meta">
 										<span class="date">{{demo.date}}</span>
 									</div>
@@ -53,8 +65,6 @@
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 
