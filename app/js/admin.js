@@ -10,7 +10,7 @@ Vue.component('add', {
                 description: '',
                 github: '',
                 tag: '',
-                imgUrl: '',
+                imgUrl: 'https://firebasestorage.googleapis.com/v0/b/demos-68bf2.appspot.com/o/images%2Fpexels-photo.jpg?alt=media&token=b2f8b01b-6f80-4b30-80c4-96e5241d66cc',
                 src: '',
                 edit: false
             },

@@ -24,28 +24,33 @@
 			<div class="fourteen wide column">
 				<p class="tags">
 					<i class="large tags icon"></i>
-					<a class="ui {{tag.color}} tag label" @click="text = tag.name" v-for='tag in tags'>{{tag.name}}</a>
+					<a class="ui {{tag.color}} tag label"
+					   @click="text = tag.name == 'All' ? '' : tag.name" v-for='tag in tags'>
+						{{tag.name}}</a>
 				</p>
 				<!--图片展示-->
-				<div class="three column stackable ui grid">
-					<div class="ui active inverted dimmer" v-if="!demos">
-						<div class="ui text loader">Loading</div>
-					</div>
-					<div class="column" v-for="demo in demos | filterBy text in 'tag'">
-						<div class="ui card">
-							<div class="ui fluid image">
-								<div class="ui ribbon label"> {{demo.tag}} </div>
-								<img src="{{demo.imgUrl}}" alt="">
-							</div>
-							<div class="content">
-								<a href="{{demo.src}}" class="header">{{demo.name}}</a>
-								<div class="meta">
-									<span class="date">{{demo.date}}</span>
+					<div class="three column stackable ui grid">
+						<div class="ui active inverted dimmer" v-if="!demos">
+							<div class="ui text loader">Loading</div>
+						</div>
+						<div class="column" v-for="demo in demos | filterBy text in 'tag'">
+							<div class="ui card">
+								<div class="ui fluid image">
+									<div class="ui ribbon label"
+										 :class="{'olive':demo.tag=='HTML','green':demo.tag=='CSS','yellow':demo.tag=='JavaScript'}">
+										{{demo.tag}} </div>
+									<img src="{{demo.imgUrl}}" alt="">
 								</div>
-								<div class="description">{{demo.description}}</div>
-							</div>
-							<div class="extra content">
-								<a href="{{demo.github}}"><i class="github icon"></i>Codes on Github</a>
+								<div class="content">
+									<a href="{{demo.src}}" class="header">{{demo.name}}</a>
+									<div class="meta">
+										<span class="date">{{demo.date}}</span>
+									</div>
+									<div class="description">{{demo.description}}</div>
+								</div>
+								<div class="extra content">
+									<a href="{{demo.github}}"><i class="github icon"></i>Codes on Github</a>
+								</div>
 							</div>
 						</div>
 					</div>
